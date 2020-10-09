@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface TinyPermission {
     String value();
+    String dynamic() default "";
 }

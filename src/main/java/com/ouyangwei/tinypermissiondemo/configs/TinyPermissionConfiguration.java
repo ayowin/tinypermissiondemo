@@ -1,5 +1,6 @@
 package com.ouyangwei.tinypermissiondemo.configs;
 
+import com.ouyangwei.tinypermissiondemo.ApiPermissionsUtil;
 import com.ouyangwei.tinypermissiondemo.UserUtil;
 import com.ouyangwei.tinypermissiondemo.annotations.TinyPermission;
 import com.ouyangwei.tinypermissiondemo.entities.User;
@@ -11,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Aspect
 @Component
 public class TinyPermissionConfiguration {
     @Autowired
     UserUtil userUtil;
+    @Autowired
+    ApiPermissionsUtil apiPermissionsUtil;
 
     @Pointcut("@annotation(com.ouyangwei.tinypermissiondemo.annotations.TinyPermission)")
     public void annotationPointcut(){
@@ -38,10 +39,28 @@ public class TinyPermissionConfiguration {
         MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         TinyPermission tinyPermission = method.getAnnotation(TinyPermission.class);
-//        System.out.println(tinyPermission.value());
-        String[] permissions = tinyPermission.value().split(",");
-        for (String permission : permissions){
-            permission = permission.trim();
+
+        String value = tinyPermission.value();
+//        System.out.println(value);
+        Set<String> permissionSet = new HashSet<>();
+        if(value != null && !value.equals("")){
+            String[] permissions = value.split(",");
+            if(permissions != null){
+                for (String permission : permissions){
+                    permissionSet.add(permission.trim());
+                }
+            }
+        }
+
+        String dynamic = tinyPermission.dynamic();
+//        System.out.println(dynamic);
+        if(dynamic != null && !value.equals("")){
+            String[] permissions = apiPermissionsUtil.getPermissions(dynamic);
+            if(permissions != null){
+                for (String permission : permissions){
+                    permissionSet.add(permission.trim());
+                }
+            }
         }
 
         Object[] args = joinPoint.getArgs();
@@ -51,7 +70,7 @@ public class TinyPermissionConfiguration {
                 String token = (String)args[0];
                 User user = userUtil.getUserByToken(token);
                 if(user != null){
-                    for (String permission : permissions){
+                    for (String permission : permissionSet){
                         if(user.getRoles().contains(permission)){
                             return joinPoint.proceed();
                         }

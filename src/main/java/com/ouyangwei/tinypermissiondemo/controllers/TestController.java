@@ -30,4 +30,10 @@ public class TestController {
     public String custom(@RequestHeader(name = "token")String token){
         return "custom...";
     }
+
+    @TinyPermission(value = "admin",dynamic = "api_permission.dynamic_permission")
+    @RequestMapping(value = "dynamic_permission")
+    public String dynamicPermission(@RequestHeader(name = "token")String token){
+        return "dynamic permission...";
+    }
 }
