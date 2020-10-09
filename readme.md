@@ -22,11 +22,17 @@ public String manage(@RequestHeader(name = "token")String token){
 public String custom(@RequestHeader(name = "token")String token){
     return "custom...";
 }
+
+@TinyPermission(value = "admin",dynamic = "api_permission.dynamic_permission")
+@RequestMapping(value = "dynamic_permission")
+public String dynamicPermission(@RequestHeader(name = "token")String token){
+    return "dynamic permission...";
+}
 ```
 以上代码可达到的效果为：
-http请求头附带token参数，TinyPermission根据该token从mysql/redis/jwt等用户载体中取出用户，判断该用户是否具有value中众多权限的其中一个，如果用户有权限，则正常执行该请求，否则抛出对应的异常，**详细的代码，可阅读TinyPermissionConfiguration获悉。**
+http请求头附带token参数，TinyPermission根据该token从mysql/redis/jwt等用户载体中取出用户，判断该用户是否具有value（静态权限）和dynamic（动态权限）众多权限的其中一个，如果用户有权限，则正常执行该请求，否则抛出对应的异常，**详细的代码，可阅读TinyPermissionConfiguration获悉。**
 
-**注意：此demo并没有直接从任何数据载体中取出用户，而是以UserUtil来模拟该过程。**
+**注意：此demo并没有直接从任何数据载体中取出用户和动态权限，而是以UserUtil和ApiPermissionsUtil来模拟该过程。**
 
 * 有权限访问图
 
