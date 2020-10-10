@@ -45,4 +45,4 @@ http请求头附带token参数，TinyPermission根据该token从mysql/redis/jwt�
 
 * 动态权限图（以上2图说明，zhangsan有manage权限，无admin权限，此处dynamic权限中有manage，可看demo代码获悉）
 
-![image-20201010103304756](C:\Users\hasee\AppData\Roaming\Typora\typora-user-images\image-20201010103304756.png)
+![image-20201010103304756](./readme_images/2.png)
