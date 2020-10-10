@@ -2,6 +2,7 @@
 # tinypermissiondemo
 
 **微权限demo，自定义了@TinyPermission注解，使用该注解即可达到权限过滤的目的。**
+* 项目结构：tinypermission为TinyPermission的独立实现，demo为使用TinyPermission注解的演示demo和指南。
 
 * 示例代码
 ```java
