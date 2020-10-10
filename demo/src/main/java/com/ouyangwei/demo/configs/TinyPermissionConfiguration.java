@@ -86,7 +86,7 @@ public class TinyPermissionConfiguration {
 
         String dynamic = tinyPermission.dynamic();
 //        System.out.println(dynamic);
-        if(dynamic != null && !value.equals("")){
+        if(dynamic != null && !dynamic.equals("")){
             if(configurationInterface != null){
                 Set<String> dynamicPermissionSet = configurationInterface.getDynamicPermissions(dynamic);
                 if(dynamicPermissionSet != null){
